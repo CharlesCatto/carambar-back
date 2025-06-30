@@ -1,3 +1,9 @@
 # Carambar Back
 
-API humoristique qui sert des blagues aléatoires façon Carambar via Express, Sequelize et SQLite.
+Une API Express avec SQLite pour afficher des blagues sans répétition.
+
+## Installation
+```bash
+npm install
+
+### Configuration du .env
