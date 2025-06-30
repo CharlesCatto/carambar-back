@@ -9,7 +9,8 @@ const app = express();
 const allowedOrigins = [
     'https://charlescatto.github.io',
     'https://charlescatto.github.io/carambar-front',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://localhost:5173/carambar-front/'
 ];
 
 // Middleware CORS personnalisé
