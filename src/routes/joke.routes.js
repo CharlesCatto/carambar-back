@@ -2,12 +2,24 @@ const express = require('express');
 const router = express.Router();
 const jokeController = require('../controllers/joke.controller');
 
+console.log('[ROUTES] Initializing joke routes...');
+
 /**
  * @swagger
  * tags:
  *   name: Jokes
  *   description: The jokes managing API
  */
+
+// Middleware de log pour toutes les routes
+router.use((req, res, next) => {
+  console.log(`[ROUTES] ${req.method} ${req.originalUrl}`, {
+    params: req.params,
+    query: req.query,
+    body: req.body
+  });
+  next();
+});
 
 /**
  * @swagger
@@ -19,7 +31,12 @@ const jokeController = require('../controllers/joke.controller');
  *       200:
  *         description: The list of the jokes
  */
-router.get('/', jokeController.getAllJokes);
+router.get('/', (req, res, next) => {
+  console.log('[ROUTES] GET /jokes - Fetching all jokes');
+  jokeController.getAllJokes(req, res, next)
+    .then(() => console.log('[ROUTES] GET /jokes - Completed'))
+    .catch(err => console.error('[ROUTES] GET /jokes - Error:', err));
+});
 
 /**
  * @swagger
@@ -33,7 +50,19 @@ router.get('/', jokeController.getAllJokes);
  *       404:
  *         description: No jokes available
  */
-router.get('/random', jokeController.getRandomJoke);
+router.get('/random', (req, res, next) => {
+  console.log('[ROUTES] GET /random - Fetching random joke');
+  const start = Date.now();
+  
+  jokeController.getRandomJoke(req, res, next)
+    .then(() => {
+      console.log(`[ROUTES] GET /random - Completed in ${Date.now() - start}ms`);
+    })
+    .catch(err => {
+      console.error('[ROUTES] GET /random - Error:', err);
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -54,7 +83,13 @@ router.get('/random', jokeController.getRandomJoke);
  *       404:
  *         description: The joke was not found
  */
-router.get('/:id', jokeController.getJokeById);
+router.get('/:id', (req, res, next) => {
+  console.log(`[ROUTES] GET /${req.params.id} - Fetching joke by ID`);
+  
+  jokeController.getJokeById(req, res, next)
+    .then(() => console.log(`[ROUTES] GET /${req.params.id} - Completed`))
+    .catch(err => console.error(`[ROUTES] GET /${req.params.id} - Error:`, err));
+});
 
 /**
  * @swagger
@@ -81,6 +116,24 @@ router.get('/:id', jokeController.getJokeById);
  *       400:
  *         description: Missing required fields
  */
-router.post('/', jokeController.createJoke);
+router.post('/', (req, res, next) => {
+  console.log('[ROUTES] POST / - Creating new joke', {
+    body: req.body
+  });
+  
+  jokeController.createJoke(req, res, next)
+    .then(joke => console.log('[ROUTES] POST / - Joke created:', joke.id))
+    .catch(err => console.error('[ROUTES] POST / - Error:', err));
+});
 
+// Middleware de log pour les erreurs
+router.use((err, req, res, next) => {
+  console.error('[ROUTES] Error handler:', {
+    error: err.message,
+    stack: err.stack
+  });
+  next(err);
+});
+
+console.log('[ROUTES] Joke routes initialized');
 module.exports = router;
