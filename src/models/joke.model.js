@@ -1,19 +1,21 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('./index'); 
+const sequelize = require('./index');
 
 const Joke = sequelize.define('Joke', {
-  question: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  answer: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  category: {
-    type: DataTypes.STRING,
-    defaultValue: 'general'
-  }
+    question: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    answer: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    category: {
+        type: DataTypes.STRING,
+        defaultValue: 'general'
+    }
+}, {
+    timestamps: true
 });
 
 module.exports = Joke;
