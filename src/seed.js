@@ -203,8 +203,6 @@ const jokes = [
 ];
 
 
-
-
 async function seed() {
     try {
         await Joke.sync({ force: true }); 

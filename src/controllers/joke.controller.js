@@ -27,21 +27,17 @@ exports.getRandomJoke = asyncHandler(async (req, res) => {
         throw error;
     }
 
-    // Filtrer les blagues déjà envoyées récemment
     const filteredJokes = jokes.filter(joke => !lastJokeIds.includes(joke.id));
     const availableJokes = filteredJokes.length > 0 ? filteredJokes : jokes;
 
-    // Sélection aléatoire
     const randomIndex = Math.floor(Math.random() * availableJokes.length);
     const randomJoke = availableJokes[randomIndex];
 
-    // Mise à jour de l'historique
     lastJokeIds.push(randomJoke.id);
     if (lastJokeIds.length > 3) {
-        lastJokeIds.shift(); // Conserver les 3 derniers
+        lastJokeIds.shift();
     }
 
-    // Retour direct des champs question et answer
     res.json({
         id: randomJoke.id,
         question: randomJoke.question,

@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 const jokeController = require('../controllers/joke.controller');
 
-/**
- * @swagger
- * tags:
- *   name: Jokes
- *   description: The jokes managing API
- */
+console.log('[ROUTES] Initializing joke routes...');
+
+// Middleware de log global
+router.use((req, res, next) => {
+  console.log(`[ROUTES] ${req.method} ${req.originalUrl}`, {
+    params: req.params,
+    query: req.query,
+    body: req.body
+  });
+  next();
+});
 
 /**
  * @swagger
@@ -33,7 +38,10 @@ router.get('/', jokeController.getAllJokes);
  *       404:
  *         description: No jokes available
  */
-router.get('/random', jokeController.getRandomJoke);
+router.get('/random', (req, res, next) => {
+  console.log('[ROUTES] GET /random - Start');
+  jokeController.getRandomJoke(req, res, next);
+});
 
 /**
  * @swagger
@@ -83,4 +91,14 @@ router.get('/:id', jokeController.getJokeById);
  */
 router.post('/', jokeController.createJoke);
 
+// Middleware de log des erreurs
+router.use((err, req, res, next) => {
+  console.error('[ROUTES] Error:', {
+    message: err.message,
+    stack: err.stack
+  });
+  next(err);
+});
+
+console.log('[ROUTES] Joke routes initialized');
 module.exports = router;
