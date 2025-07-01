@@ -42,7 +42,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'https://carambar-back-32dh.onrender.com/api/v1'
+                url: 'https://carambar-back-hmfy.onrender.com'
             }
         ]
     },
