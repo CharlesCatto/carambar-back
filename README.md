@@ -8,6 +8,7 @@ API Node.js pour servir des blagues Carambar aléatoires avec gestion complète 
 
 - **URL de production** : (https://carambar-back-hmfy.onrender.com/api/v1)
 - **Documentation Swagger**
+( https://carambar-back-hmfy.onrender.com/api-docs/#/Jokes/get_jokes__id_ )
 
 ---
 
